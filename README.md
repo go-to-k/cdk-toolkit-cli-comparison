@@ -8,12 +8,13 @@ This is a sample repository for comparison between CDK Toolkit Library and CDK C
 npx ts-node src/index.ts
 ```
 
-## comparison
+## Comparison
 
-### outdir
+### Whether cdk.out is used as outdir
 
-- A temporary directory is used as `outdir` by default
+- A temporary directory in your environment is used as `outdir` by default
   - not `cdk.out`
+  - In my PC: `/private/var/folders/...`
 
 ```ts
 const getCloudAssemblySource = async (toolkit: Toolkit): Promise<ICloudAssemblySource> => {
@@ -42,7 +43,7 @@ const getCloudAssemblySource = async (toolkit: Toolkit): Promise<ICloudAssemblyS
 };
 ```
 
-### Whether cdk.json and cdk.context.json are read or not
+### Whether cdk.json and cdk.context.json are read
 
 - cdk.json
 
