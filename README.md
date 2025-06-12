@@ -57,9 +57,9 @@ CdkToolkitCliComparisonStack: deploying... [1/1]
 
 ### Whether to use cdk.out as outdir
 
-- A temporary directory in your environment is used as `outdir` by default
-  - not `cdk.out`
-  - In my PC: `/private/var/folders/...`
+A temporary directory (my PC: `/private/var/folders/...`) in your environment is used as `outdir` by default, it is not `cdk.out`.
+
+- index.ts
 
 ```ts
 const getCloudAssemblySource = async (toolkit: Toolkit): Promise<ICloudAssemblySource> => {
@@ -71,7 +71,9 @@ const getCloudAssemblySource = async (toolkit: Toolkit): Promise<ICloudAssemblyS
 };
 ```
 
-- `cdk.out` is used if `outdir` is specified with it
+- index.ts with `outdir`
+
+`cdk.out` is used if `outdir` is specified with it
 
 ```ts
 const getCloudAssemblySource = async (toolkit: Toolkit): Promise<ICloudAssemblySource> => {
@@ -136,7 +138,8 @@ const getCloudAssemblySource = async (toolkit: Toolkit): Promise<ICloudAssemblyS
 ```
 
 - CloudFormation Template from `cdk.out` Cloud Assembly
-  - `@aws-cdk/aws-iam:minimizePolicies` is not applied because **cdk.json is not read**
+
+`@aws-cdk/aws-iam:minimizePolicies` is not applied because **cdk.json is not read**
 
 ```json
   "Statement": [
@@ -172,7 +175,8 @@ const getCloudAssemblySource = async (toolkit: Toolkit): Promise<ICloudAssemblyS
 ```
 
 - CloudFormation Template from `cdk.out` Cloud Assembly
-  - `@aws-cdk/aws-iam:minimizePolicies` is applied as true because **cdk.json is read**
+
+`@aws-cdk/aws-iam:minimizePolicies` is applied as true because **cdk.json is read**
 
 ```json
   "Statement": [
