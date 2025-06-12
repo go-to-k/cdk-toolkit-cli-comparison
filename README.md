@@ -10,7 +10,7 @@ npx ts-node src/index.ts
 
 ## comparison
 
-### Whether cdk.json is read
+### Whether cdk.json and cdk.context.json are read or not
 
 - cdk.json
 
