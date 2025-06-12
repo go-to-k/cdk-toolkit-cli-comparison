@@ -10,6 +10,51 @@ npx ts-node src/index.ts
 
 ## Comparison
 
+### Default value for RequireApproval
+
+- cdk code
+
+```ts
+// role.addToPrincipalPolicy(
+//   new iam.PolicyStatement({
+//     actions: ['s3:PutObject'],
+//     resources: ['arn:aws:s3:::my-bucket/*'],
+//   }),
+// );
+```
+
+- RequireApproval
+
+Toolkit outputs the message `Do you wish to deploy these changes`, but never ask for approval.
+
+Because the default value for `RequireApproval` (`--require-approval`) is `NEVER`.
+
+(The one for CDK CLI is `BROADENING`.)
+
+```sh
+❯ npx ts-node src/index.ts
+...
+...
+IAM Statement Changes
+┌───┬──────────────────────────┬────────┬──────────────┬─────────────┬───────────┐
+│   │ Resource                 │ Effect │ Action       │ Principal   │ Condition │
+├───┼──────────────────────────┼────────┼──────────────┼─────────────┼───────────┤
+│ - │ arn:aws:s3:::my-bucket/* │ Allow  │ s3:GetObject │ AWS:${Role} │           │
+│   │                          │        │ s3:PutObject │             │           │
+├───┼──────────────────────────┼────────┼──────────────┼─────────────┼───────────┤
+│ + │ arn:aws:s3:::my-bucket/* │ Allow  │ s3:GetObject │ AWS:${Role} │           │
+└───┴──────────────────────────┴────────┴──────────────┴─────────────┴───────────┘
+(NOTE: There may be security-related changes not in this list. See https://github.com/aws/aws-cdk/issues/1299)
+
+
+
+"--require-approval" is enabled and stack includes security-sensitive updates.
+Do you wish to deploy these changes
+CdkToolkitCliComparisonStack: deploying... [1/1]
+...
+...
+```
+
 ### Whether to use cdk.out as outdir
 
 - A temporary directory in your environment is used as `outdir` by default
@@ -205,49 +250,4 @@ The file is created.
     "keyId": "1234abcd-12ab-34cd-56ef-1234567890ab"
   }
 }
-```
-
-### Default value for RequireApproval
-
-- cdk code
-
-```ts
-// role.addToPrincipalPolicy(
-//   new iam.PolicyStatement({
-//     actions: ['s3:PutObject'],
-//     resources: ['arn:aws:s3:::my-bucket/*'],
-//   }),
-// );
-```
-
-- RequireApproval
-
-Toolkit outputs the message `Do you wish to deploy these changes`, but never ask for approval.
-
-Because the default value for `RequireApproval` (`--require-approval`) is `NEVER`.
-
-(The one for CDK CLI is `BROADENING`.)
-
-```sh
-❯ npx ts-node src/index.ts
-...
-...
-IAM Statement Changes
-┌───┬──────────────────────────┬────────┬──────────────┬─────────────┬───────────┐
-│   │ Resource                 │ Effect │ Action       │ Principal   │ Condition │
-├───┼──────────────────────────┼────────┼──────────────┼─────────────┼───────────┤
-│ - │ arn:aws:s3:::my-bucket/* │ Allow  │ s3:GetObject │ AWS:${Role} │           │
-│   │                          │        │ s3:PutObject │             │           │
-├───┼──────────────────────────┼────────┼──────────────┼─────────────┼───────────┤
-│ + │ arn:aws:s3:::my-bucket/* │ Allow  │ s3:GetObject │ AWS:${Role} │           │
-└───┴──────────────────────────┴────────┴──────────────┴─────────────┴───────────┘
-(NOTE: There may be security-related changes not in this list. See https://github.com/aws/aws-cdk/issues/1299)
-
-
-
-"--require-approval" is enabled and stack includes security-sensitive updates.
-Do you wish to deploy these changes
-CdkToolkitCliComparisonStack: deploying... [1/1]
-...
-...
 ```
