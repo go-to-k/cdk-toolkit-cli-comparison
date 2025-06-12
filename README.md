@@ -77,11 +77,16 @@ role.addToPrincipalPolicy(
 
 ```ts
 const getCloudAssemblySource = async (toolkit: Toolkit): Promise<ICloudAssemblySource> => {
-  return await toolkit.fromAssemblyBuilder(async (_props: AssemblyBuilderProps) => {
-    const app = cdkApp();
-    const cloudAssembly = await app.synth();
-    return cloudAssembly;
-  });
+  return await toolkit.fromAssemblyBuilder(
+    async (_props: AssemblyBuilderProps) => {
+      const app = cdkApp();
+      const cloudAssembly = await app.synth();
+      return cloudAssembly;
+    },
+    {
+      outdir: path.resolve(__dirname, '../cdk.out'),
+    },
+  );
 };
 ```
 
@@ -114,6 +119,7 @@ const getCloudAssemblySource = async (toolkit: Toolkit): Promise<ICloudAssemblyS
       return cloudAssembly;
     },
     {
+      outdir: path.resolve(__dirname, '../cdk.out'),
       contextStore: new CdkAppMultiContext(path.resolve(__dirname, '..')),
     },
   );
