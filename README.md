@@ -22,6 +22,24 @@ npx ts-node src/index.ts
     "@aws-cdk/aws-iam:minimizePolicies": true,
 ```
 
+- cdk code
+
+```ts
+role.addToPrincipalPolicy(
+  new iam.PolicyStatement({
+    actions: ['s3:GetObject'],
+    resources: ['arn:aws:s3:::my-bucket/*'],
+  }),
+);
+
+role.addToPrincipalPolicy(
+  new iam.PolicyStatement({
+    actions: ['s3:PutObject'],
+    resources: ['arn:aws:s3:::my-bucket/*'],
+  }),
+);
+```
+
 - index.ts
 
 ```ts
