@@ -12,18 +12,18 @@ const deploy = async () => {
   const cx = await getCloudAssemblySource(toolkit);
 
   /*
-   * synthの結果(CloudAssembly)をキャッシュしない・1コマンドのみの呼び出しであればこれだけでいい
+   * If not caching the synth result (CloudAssembly), or for single command calls only, this is sufficient
    */
   // await toolkit.deploy(cx);
 
   /*
-   * synthの結果(CloudAssembly)をキャッシュする
+   * Cache the synth result (CloudAssembly)
    */
   const cloudAssembly = await toolkit.synth(cx);
 
   await toolkit.deploy(cloudAssembly);
 
-  // cdk.outのlockファイルを解放するため
+  // Release the lock file in cdk.out
   await cloudAssembly.dispose();
 };
 
