@@ -10,6 +10,38 @@ npx ts-node src/index.ts
 
 ## comparison
 
+### outdir
+
+- A temporary directory is used as `outdir` by default
+  - not `cdk.out`
+
+```ts
+const getCloudAssemblySource = async (toolkit: Toolkit): Promise<ICloudAssemblySource> => {
+  return await toolkit.fromAssemblyBuilder(async (_props: AssemblyBuilderProps) => {
+    const app = cdkApp();
+    const cloudAssembly = await app.synth();
+    return cloudAssembly;
+  });
+};
+```
+
+- `cdk.out` is used if `outdir` is specified with it
+
+```ts
+const getCloudAssemblySource = async (toolkit: Toolkit): Promise<ICloudAssemblySource> => {
+  return await toolkit.fromAssemblyBuilder(
+    async (_props: AssemblyBuilderProps) => {
+      const app = cdkApp();
+      const cloudAssembly = await app.synth();
+      return cloudAssembly;
+    },
+    {
+      outdir: path.resolve(__dirname, '../cdk.out'),
+    },
+  );
+};
+```
+
 ### Whether cdk.json and cdk.context.json are read or not
 
 - cdk.json
