@@ -1,6 +1,7 @@
 import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import * as iam from 'aws-cdk-lib/aws-iam';
+import * as kms from 'aws-cdk-lib/aws-kms';
 
 export class CdkToolkitCliComparisonStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -23,5 +24,13 @@ export class CdkToolkitCliComparisonStack extends cdk.Stack {
         resources: ['arn:aws:s3:::my-bucket/*'],
       }),
     );
+
+    const key = kms.Key.fromLookup(this, 'Key', {
+      aliasName: 'alias/dummy',
+      returnDummyKeyOnMissing: true,
+    });
+    new cdk.CfnOutput(this, 'IsLookupDummyOutput', {
+      value: kms.Key.isLookupDummy(key).toString(),
+    });
   }
 }

@@ -10,7 +10,7 @@ npx ts-node src/index.ts
 
 ## Comparison
 
-### Whether cdk.out is used as outdir
+### Whether to use cdk.out as outdir
 
 - A temporary directory in your environment is used as `outdir` by default
   - not `cdk.out`
@@ -43,7 +43,7 @@ const getCloudAssemblySource = async (toolkit: Toolkit): Promise<ICloudAssemblyS
 };
 ```
 
-### Whether cdk.json and cdk.context.json are read
+### Whether to read cdk.json
 
 - cdk.json
 
@@ -140,4 +140,69 @@ const getCloudAssemblySource = async (toolkit: Toolkit): Promise<ICloudAssemblyS
     "Resource": "arn:aws:s3:::my-bucket/*"
    }
   ],
+```
+
+### Whether to read/write cdk.context.json
+
+- cdk code
+
+```ts
+const key = kms.Key.fromLookup(this, 'Key', {
+  aliasName: 'alias/dummy',
+  returnDummyKeyOnMissing: true,
+});
+new cdk.CfnOutput(this, 'IsLookupDummyOutput', {
+  value: kms.Key.isLookupDummy(key).toString(),
+});
+```
+
+- index.ts
+
+```ts
+const getCloudAssemblySource = async (toolkit: Toolkit): Promise<ICloudAssemblySource> => {
+  return await toolkit.fromAssemblyBuilder(
+    async (_props: AssemblyBuilderProps) => {
+      const app = cdkApp();
+      const cloudAssembly = await app.synth();
+      return cloudAssembly;
+    },
+    {
+      outdir: path.resolve(__dirname, '../cdk.out'),
+    },
+  );
+};
+```
+
+- cdk.context.json
+
+The file isn't created.
+
+- index.ts with `contextStore`
+
+```ts
+const getCloudAssemblySource = async (toolkit: Toolkit): Promise<ICloudAssemblySource> => {
+  return await toolkit.fromAssemblyBuilder(
+    async (_props: AssemblyBuilderProps) => {
+      const app = cdkApp();
+      const cloudAssembly = await app.synth();
+      return cloudAssembly;
+    },
+    {
+      outdir: path.resolve(__dirname, '../cdk.out'),
+      contextStore: new CdkAppMultiContext(path.resolve(__dirname, '..')),
+    },
+  );
+};
+```
+
+- cdk.context.json
+
+The file is created.
+
+```json
+{
+  "key-provider:account=123456789012:aliasName=alias/dummy:region=us-east-1": {
+    "keyId": "1234abcd-12ab-34cd-56ef-1234567890ab"
+  }
+}
 ```
