@@ -108,7 +108,7 @@ const getCloudAssemblySource = async (toolkit: Toolkit): Promise<ICloudAssemblyS
   ],
 ```
 
-- index.ts with `contextStore`
+- index.ts with `contextStore` (=`CdkAppMultiContext`)
 
 ```ts
 const getCloudAssemblySource = async (toolkit: Toolkit): Promise<ICloudAssemblySource> => {
@@ -177,7 +177,7 @@ const getCloudAssemblySource = async (toolkit: Toolkit): Promise<ICloudAssemblyS
 
 The file isn't created.
 
-- index.ts with `contextStore`
+- index.ts with `contextStore` (=`CdkAppMultiContext`)
 
 ```ts
 const getCloudAssemblySource = async (toolkit: Toolkit): Promise<ICloudAssemblySource> => {
