@@ -77,56 +77,16 @@ role.addToPrincipalPolicy(
 
 ```ts
 const getCloudAssemblySource = async (toolkit: Toolkit): Promise<ICloudAssemblySource> => {
-  return await toolkit.fromAssemblyBuilder(
-    async (_props: AssemblyBuilderProps) => {
-      const app = cdkApp();
-      const cloudAssembly = await app.synth();
-      return cloudAssembly;
-    },
-    {
-      outdir: path.resolve(__dirname, '../cdk.out'),
-      contextStore: new CdkAppMultiContext(path.resolve(__dirname, '..')),
-    },
-  );
+  return await toolkit.fromAssemblyBuilder(async (_props: AssemblyBuilderProps) => {
+    const app = cdkApp();
+    const cloudAssembly = await app.synth();
+    return cloudAssembly;
+  });
 };
 ```
 
-- CloudFormation Template from `cdk.out` Cloud Assembly (before comment out)
-  - `@aws-cdk/aws-iam:minimizePolicies` is true because cdk.json is read
-
-```json
-  "Statement": [
-   {
-    "Action": [
-     "s3:GetObject",
-     "s3:PutObject"
-    ],
-    "Effect": "Allow",
-    "Resource": "arn:aws:s3:::my-bucket/*"
-   }
-  ],
-```
-
-- index.ts without `contextStore`
-
-```ts
-const getCloudAssemblySource = async (toolkit: Toolkit): Promise<ICloudAssemblySource> => {
-  return await toolkit.fromAssemblyBuilder(
-    async (_props: AssemblyBuilderProps) => {
-      const app = cdkApp();
-      const cloudAssembly = await app.synth();
-      return cloudAssembly;
-    },
-    {
-      outdir: path.resolve(__dirname, '../cdk.out'),
-      // contextStore: new CdkAppMultiContext(path.resolve(__dirname, '..')),
-    },
-  );
-};
-```
-
-- CloudFormation Template from `cdk.out` Cloud Assembly (after comment out)
-  - `@aws-cdk/aws-iam:minimizePolicies` is false because cdk.json is not read
+- CloudFormation Template from `cdk.out` Cloud Assembly
+  - `@aws-cdk/aws-iam:minimizePolicies` is not applied because **cdk.json is not read**
 
 ```json
   "Statement": [
@@ -137,6 +97,39 @@ const getCloudAssemblySource = async (toolkit: Toolkit): Promise<ICloudAssemblyS
    },
    {
     "Action": "s3:PutObject",
+    "Effect": "Allow",
+    "Resource": "arn:aws:s3:::my-bucket/*"
+   }
+  ],
+```
+
+- index.ts with `contextStore`
+
+```ts
+const getCloudAssemblySource = async (toolkit: Toolkit): Promise<ICloudAssemblySource> => {
+  return await toolkit.fromAssemblyBuilder(
+    async (_props: AssemblyBuilderProps) => {
+      const app = cdkApp();
+      const cloudAssembly = await app.synth();
+      return cloudAssembly;
+    },
+    {
+      contextStore: new CdkAppMultiContext(path.resolve(__dirname, '..')),
+    },
+  );
+};
+```
+
+- CloudFormation Template from `cdk.out` Cloud Assembly
+  - `@aws-cdk/aws-iam:minimizePolicies` is applied as true because **cdk.json is read**
+
+```json
+  "Statement": [
+   {
+    "Action": [
+     "s3:GetObject",
+     "s3:PutObject"
+    ],
     "Effect": "Allow",
     "Resource": "arn:aws:s3:::my-bucket/*"
    }
