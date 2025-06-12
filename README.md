@@ -27,9 +27,9 @@ npx ts-node src/index.ts
 
 Toolkit outputs the message `Do you wish to deploy these changes`, but never ask for approval.
 
-Because the default value for `RequireApproval` (`--require-approval`) is `NEVER`.
+Because the default value for `RequireApproval` (`--require-approval`) is `NEVER`. (The one for CDK CLI is `BROADENING`.)
 
-(The one for CDK CLI is `BROADENING`.)
+Toolkit uses the IO Host (`IIoHost` interface) for interactive (prompt). The default IO host is `NonInteractiveIoHost` that doesn't ask any questions.
 
 ```sh
 ❯ npx ts-node src/index.ts
