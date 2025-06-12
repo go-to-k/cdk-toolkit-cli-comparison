@@ -8,7 +8,7 @@ This is a sample repository for comparison between CDK Toolkit Library and CDK C
 npx ts-node src/index.ts
 ```
 
-## Comparison
+## Differences from CDK CLI
 
 ### Default value for RequireApproval
 
@@ -55,7 +55,7 @@ CdkToolkitCliComparisonStack: deploying... [1/1]
 ...
 ```
 
-### Whether to use cdk.out as outdir
+### Whether to use cdk.out as outdir by default
 
 A temporary directory (my PC: `/private/var/folders/...`) in your environment is used as `outdir` by default, it is not `cdk.out`.
 
@@ -90,7 +90,7 @@ const getCloudAssemblySource = async (toolkit: Toolkit): Promise<ICloudAssemblyS
 };
 ```
 
-### Whether to read cdk.json
+### Whether to read cdk.json by default
 
 - cdk.json
 
@@ -191,7 +191,7 @@ const getCloudAssemblySource = async (toolkit: Toolkit): Promise<ICloudAssemblyS
   ],
 ```
 
-### Whether to read/write cdk.context.json
+### Whether to read/write cdk.context.json by default
 
 - cdk code
 
