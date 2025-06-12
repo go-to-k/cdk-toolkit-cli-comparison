@@ -4,7 +4,12 @@ import { CdkToolkitCliComparisonStack } from '../lib/cdk-toolkit-cli-comparison-
 export const cdkApp = (): cdk.App => {
   const app = new cdk.App();
 
-  new CdkToolkitCliComparisonStack(app, 'CdkToolkitCliComparisonStack');
+  new CdkToolkitCliComparisonStack(app, 'CdkToolkitCliComparisonStack', {
+    env: {
+      region: 'us-east-1',
+      account: process.env.AWS_ACCOUNT_ID,
+    },
+  });
 
   return app;
 };
