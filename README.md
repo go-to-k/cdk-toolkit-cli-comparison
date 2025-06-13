@@ -55,9 +55,9 @@ CdkToolkitCliComparisonStack: deploying... [1/1]
 ...
 ```
 
-### Whether to use cdk.out as outdir by default
+### Whether to use cdk.out in the project's root directory as outdir by default
 
-A temporary directory (my PC: `/private/var/folders/...`) in your environment is used as `outdir` by default, it is not `cdk.out`.
+A temporary directory (my PC: `/private/var/folders/...`) in your environment is used as `outdir` by default, it is not `cdk.out` in the project's root directory.
 
 - index.ts
 
@@ -73,7 +73,7 @@ const getCloudAssemblySource = async (toolkit: Toolkit): Promise<ICloudAssemblyS
 
 - index.ts with `outdir`
 
-`cdk.out` is used if `outdir` is specified with it
+`cdk.out` in the project's root directory is used if `outdir` is specified with it
 
 ```ts
 const getCloudAssemblySource = async (toolkit: Toolkit): Promise<ICloudAssemblySource> => {
